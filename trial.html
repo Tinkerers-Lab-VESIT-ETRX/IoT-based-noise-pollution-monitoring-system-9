@@ -1,0 +1,151 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Charts.js</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	
+	<div class="chart">
+		<canvas id="myChart" width="400" height="100"></canvas>
+	</div>
+	<div class="chart">
+		<canvas id="Chart" width="400" height="100"></canvas>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+</body>
+</html>
+<script>
+	const Http = new XMLHttpRequest();
+const url='https://noise15-3fa2f-default-rtdb.asia-southeast1.firebasedatabase.app/Noise_data.json';
+Http.open("GET", url);
+Http.send();
+
+            var xaxis=[];
+            var yaxis=[];
+            var date=[];
+Http.onreadystatechange = (e) => {
+    if (Http.readyState == XMLHttpRequest.DONE){
+        console.log(Http.responseText)
+
+ 
+        var resData=JSON.parse(Http.responseText);
+        console.log(resData.length);
+        var i;
+        var plotData=[];
+        
+        for(i=0;i<resData.length;i++){
+            var y=resData[i]['reading'];
+            var x=resData[i]['time'];
+            var z=resData[i]['date'];
+            xaxis.push(x);
+            yaxis.push(y);
+            date.push(z);
+
+        }
+    }
+
+  
+        }
+        console.log(xaxis);
+        console.log(yaxis);
+        console.log(date);
+        
+        console.log("x");
+
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+	// The type of chart we want to create
+	type: 'line', // also try bar or other graph types
+
+	// The data for our dataset
+	data: {
+		labels: xaxis,
+		// Information about the dataset
+    datasets: [{
+			label: "Noise",
+			backgroundColor: 'purple',
+			borderColor: 'royalblue',
+			data: yaxis,
+		}]
+	},
+
+	// Configuration options
+	options: {
+    layout: {
+      padding: 10,
+    },
+		legend: {
+			position: 'top',
+		},
+		title: {
+			display: true,
+			text: 'Noise Monitoring System'
+		},
+		scales: {
+			yAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'reading '
+				}
+			}],
+			xAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'time'
+				}
+			}]
+		}
+	}
+});
+
+
+var ctx1 = document.getElementById('Chart').getContext('2d');
+var chart1 = new Chart(ctx1, {
+	// The type of chart we want to create
+	type: 'bar', // also try bar or other graph types
+
+	// The data for our dataset
+	data: {
+		labels: xaxis,
+		// Information about the dataset
+    datasets: [{
+			label: "Noise",
+			backgroundColor: 'lightblue',
+			borderColor: 'royalblue',
+			data: yaxis,
+		}]
+	},
+
+	// Configuration options
+	options: {
+    layout: {
+      padding: 10,
+    },
+		legend: {
+			position: 'top',
+		},
+		title: {
+			display: true,
+			text: 'Noise Monitoring System'
+		},
+		scales: {
+			yAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'reading '
+				}
+			}],
+			xAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'time'
+				}
+			}]
+		}
+	}
+});
+</script>
